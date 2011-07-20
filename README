@@ -1,0 +1,73 @@
+A rudimentary Ruby memory profiler that uses pure in-VM techniques to
+analyse the object space and attempt to determine memory usage trends.
+
+* Takes instantaneous snapshots, and can be used to determine trends
+  between subsequent instances.
+* Can also be used to detect memory leaks (obscure object references,
+  etc.) in particular blocks or sections of code.
+
+Note that this uses pure Ruby code and techniques, without patches to
+the VM. As such it is trivial to install and use, but it doesn't have
+access to raw memory management/garbage collection data, so is forced
+to estimate, and it will affect performance noticeably.
+
+It has been tested with the following Ruby versions (ruby -v):
+* ruby 1.8.7 (2009-06-12 patchlevel 174) [i486-linux]
+* ruby 1.9.1p243 (2009-07-16 revision 24175) [i486-linux]
+
+This project was inspired by the similar Ruby memory profiler at
+http://code.google.com/p/ruby-memory-profiler/ , which was apparently
+released under a BSD (or BSD-style) license; but since no attribution
+details were included, I haven't copied them here anywhere.
+
+-------------------------------------------------------------------------
+
+The simplest way to use this utility is to copy the file:
+  lib/memory-profiler.rb
+to your project somewhere, and include it directly.
+
+However the correct way is to build the gem, so that you can use it in
+all your projects.
+
+-------------------------------------------------------------------------
+
+To build the gem, using rake:
+
+  rake install
+  rake clean
+
+Then in your code:
+
+  require 'rubygems'
+  require 'memory-profiler'
+
+-------------------------------------------------------------------------
+
+Refer to RDoc documentation for more detail, but here's an example for
+using the utility in your Ruby program:
+
+  # start the daemon, and let us know the file to which it reports
+  puts MemoryProfiler.start_daemon( :limit=>5, :delay=>10, :marshall_size=>true, :sort_by=>:absdelta )
+  
+  5.times do
+    blah = Hash.new([])
+    
+    # compare memory space before and after executing a block of code
+    rpt  = MemoryProfiler.start( :limit=>10 ) do
+      # some activities likely to create object references
+      100.times{ blah[1] << 'aaaaa' }
+      1000.times{ blah[2] << 'bbbbb' }
+    end
+    
+    # display the report in a (slightly) readable form
+    puts MemoryProfiler.format(rpt)
+    
+    sleep 7
+  end
+  
+  # terminate the daemon
+  MemoryProfiler.stop_daemon
+
+-------------------------------------------------------------------------
+
+Report any issues to the author <matthew@kerwin.net.au>
