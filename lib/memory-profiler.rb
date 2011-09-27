@@ -124,7 +124,7 @@ module MemoryProfiler
 
                 filename = opt[:filename] || "/tmp/memory_profiler-#{Process.pid}-#{Time.now.to_i}.log"
                 File.open(filename, 'w') do |f|
-                        data.each {|k,c| file.printf( "%5d %s\n", c, k.name ) }
+                        data.each {|k,c| f.printf( "%5d %s\n", c, k.name ) }
                 end
 
                 GC.start if opt[:force_gc]
