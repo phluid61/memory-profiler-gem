@@ -3,8 +3,8 @@
 =begin
 
   Author:  Matthew Kerwin  <matthew@kerwin.net.au>
-  Version: 1.0.1
-  Date:    2011-01-31
+  Version: 1.0.2
+  Date:    2011-09-27
 
 
   Copyright 2011 Matthew Kerwin.
