@@ -69,5 +69,3 @@ using the utility in your Ruby program:
   MemoryProfiler.stop_daemon
 
 -------------------------------------------------------------------------
-
-Report any issues to the author <matthew@kerwin.net.au>

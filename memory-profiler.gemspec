@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 	s.platform          = Gem::Platform::RUBY
 	s.authors           = ['Matthew Kerwin']
 	s.email             = ['matthew@kerwin.net.au']
-	s.homepage          = 'http://code.google.com/p/memory-profiler-ruby/'
+	s.homepage          = 'https://github.com/phluid61/memory-profiler.gem'
 	s.summary           = 'A Ruby Memory Profiler'
 	s.description       = 'A rudimentary memory profiler that uses pure in-VM techniques to analyse the object space and attempt to determine memory usage trends.'
 	s.license           = 'Apache License 2.0'
