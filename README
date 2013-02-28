@@ -31,7 +31,7 @@ all your projects.
 
 -------------------------------------------------------------------------
 
-To build the gem, using rake:
+To build the gem:
 
   gem build memory-profiler.gemspec
   gem install memory-profiler-1.0.2.gem
