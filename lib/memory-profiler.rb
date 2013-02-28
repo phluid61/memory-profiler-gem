@@ -40,11 +40,11 @@ module MemoryProfiler
 		:string_debug  => false,
 		:marshall_size => false,
 	}
-	@@daemon_thread = nil
-	@@daemon_sync = Sync.new
+	@@daemon_thread = nil    #:nodoc:
+	@@daemon_sync = Sync.new #:nodoc:
 
-	@@start_data = nil
-	@@start_sync = Sync.new
+	@@start_data = nil       #:nodoc:
+	@@start_sync = Sync.new  #:nodoc:
 
 	#
 	# Begins an analysis thread that runs periodically, reporting to a text
@@ -220,6 +220,7 @@ module MemoryProfiler
 		res
 	end
 
+	# @private
 	#  => [ [Class, current, delta], ... ]
 	def self._delta(curr, prev, opt={}) #:nodoc:
 		opt = DEFAULTS.merge(opt)
