@@ -33,12 +33,12 @@ all your projects.
 
 To build the gem, using rake:
 
-  rake install
-  rake clean
+  gem build memory-profiler.gemspec
+  gem install memory-profiler-1.0.2.gem
 
 Then in your code:
 
-  require 'rubygems'
+  require 'rubygems' # Ruby 1.8 only
   require 'memory-profiler'
 
 -------------------------------------------------------------------------
