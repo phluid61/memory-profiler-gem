@@ -4,7 +4,7 @@ require 'rake'
 
 Gem::Specification.new do |s|
 	s.name              = 'memory-profiler'
-	s.version           = '1.0.2'
+	s.version           = '1.0.3'
 	s.platform          = Gem::Platform::RUBY
 	s.authors           = ['Matthew Kerwin']
 	s.email             = ['matthew@kerwin.net.au']

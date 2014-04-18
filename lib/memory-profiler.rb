@@ -3,11 +3,11 @@
 =begin
 
   Author:  Matthew Kerwin  <matthew@kerwin.net.au>
-  Version: 1.0.2
-  Date:    2011-09-27
+  Version: 1.0.3
+  Date:    2014-04-19
 
 
-  Copyright 2011 Matthew Kerwin.
+  Copyright 2011,2014 Matthew Kerwin.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ module MemoryProfiler
 		:filename => nil,
 		# ObjectSpaceAnalyser options
 		:string_debug  => false,
-		:marshall_size => false,
+		:marshal_size => false,
 	}
 	@@daemon_thread = nil    #:nodoc:
 	@@daemon_sync = Sync.new #:nodoc:
@@ -148,7 +148,7 @@ module MemoryProfiler
 	#   :force_gc      => true      # if true, forces a garbage collection before and after generating report
 	#   
 	#   :string_debug  => false     # see ObjectSpaceAnalyser#analyse
-	#   :marshall_size => false     # see ObjectSpaceAnalyser#analyse
+	#   :marshal_size => false     # see ObjectSpaceAnalyser#analyse
 	#
 	def self.start(opt = {}, &block)
 		opt = DEFAULTS.merge(opt)
@@ -267,7 +267,7 @@ module MemoryProfiler
 		#
 		# Returns a hash mapping each Class to its usage.
 		#
-		# If opt[:marshall_size] is true, the usage is estimated using Marshall.dump() for each instance;
+		# If opt[:marshal_size] is true, the usage is estimated using Marshal.dump() for each instance;
 		# otherwise it is a simple instance count.
 		#
 		# If opt[:string_debug] is true, the analyser writes a text file containing every string
@@ -277,7 +277,7 @@ module MemoryProfiler
 		#
 		def self.analyse(opt = {})
 			opt = MemoryProfiler::DEFAULTS.merge(opt)
-			marshall_size = !!opt[:marshall_size]
+			marshal_size = !!(opt[:marshal_size] || opt[:marshall_size])
 			string_debug = !!opt[:string_debug]
 			ign  = opt[:ignore]
 			only = opt[:only]
@@ -286,7 +286,7 @@ module MemoryProfiler
 			str = [] if string_debug
 			ObjectSpace.each_object do |o|
 				if res[o.class] or ((only.empty? or only.any?{|y| o.is_a? y }) and ign.none?{|x| o.is_a? x })
-					res[o.class] += (marshall_size ? self.__sizeof(o) : 1)
+					res[o.class] += (marshal_size ? self.__sizeof(o) : 1)
 				end
 				str.push o.inspect if string_debug and o.class == String
 			end
@@ -297,7 +297,7 @@ module MemoryProfiler
 			res
 		end
 
-		# Estimates the size of an object using Marshall.dump()
+		# Estimates the size of an object using Marshal.dump()
 		# Defaults to 1 if anything goes wrong.
 		def self.__sizeof(o) #:nodoc:
 			if o.respond_to? :dump
@@ -321,7 +321,7 @@ end
 
 
 if $0 == __FILE__
-	puts MemoryProfiler.start_daemon( :limit=>5, :delay=>10, :marshall_size=>true, :sort_by=>:absdelta )
+	puts MemoryProfiler.start_daemon( :limit=>5, :delay=>10, :marshal_size=>true, :sort_by=>:absdelta )
 
 	5.times do
 		blah = Hash.new([])
