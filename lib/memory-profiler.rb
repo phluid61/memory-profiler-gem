@@ -300,7 +300,11 @@ module MemoryProfiler
 		# Estimates the size of an object using Marshall.dump()
 		# Defaults to 1 if anything goes wrong.
 		def self.__sizeof(o) #:nodoc:
-			Marshall.dump(o).size
+			if o.respond_to? :dump
+				Marshal.dump(o).size
+			else
+				1
+			end
 		rescue ::Exception
 			1
 		end
